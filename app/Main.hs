@@ -1,11 +1,29 @@
 module Main where
 
-import Date (parseDueDate, daysLeft)
+import Task
 
 main :: IO ()
-main = case parseDueDate "01-06-2025" of
-  Just date -> do
-    days <- daysLeft date
-    print $ "Pozostalo dni: " ++ show days
-  Nothing -> putStrLn "Nieprawidlowy format daty"
+main = do
+  putStrLn "=== Dodawanie zadania ==="
+  putStrLn "Tytuł:"
+  t <- getLine
+  putStrLn "Opis:"
+  d <- getLine
+  putStrLn "Data wykonania (DD-MM-YYYY):"
+  dateStr <- getLine
+  putStrLn "Priorytet (Low, Medium, High):"
+  pStr <- getLine
+
+  -- Parsujemy priorytet jako wartość typu Priority
+  let prio = case pStr of
+               "High"   -> High
+               "Medium" -> Medium
+               _        -> Low
+
+  -- Zakładamy, że wszystko jest poprawne – użycie "Just"
+  let taskList = []
+      updatedList = addTask taskList t d dateStr prio
+
+  putStrLn "\nZadanie dodane:"
+  print (last updatedList)
 
