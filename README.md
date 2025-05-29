@@ -36,7 +36,9 @@ Haskell-ListaToDo
 
 Z katalogu głównego projektu uruchom GHCi:
 ```bash
-ghci -i:src app/Main.hs
+ghci -i:src
+:set -package time
+:l app/Main.hs
 ```
 
 W interpreterze wpisz:
