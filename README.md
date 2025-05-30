@@ -19,15 +19,25 @@ Zadania są przechowywane w pamięci jako lista.
 ### 📁 Struktura katalogów
 
 ```bash
-Haskell-ListaToDo  
-├── app/
-│ └── Main.hs # plik główny aplikacji  
-├── lab/  
-│ └── Notify.hs # pliki eksperymentalne  
+Haskell-ListaToDo/
+├── Makefile        # proces kompilacji programu  
+├── README.md  
+├── app/  
+│   └── Main.hs     # plik główny aplikacji  
+├── build/          # katalog skompilowanych wersji aplikacji  
+├── data/  
+│   └── save.txt  
+├── lab/            # pliki tymczasowe laboratoryjne  
+│   └── Notify.hs  
+├── resources/  
 ├── src/  
-│ ├── Date.hs # implementacja typu DueDate  
-│ └── Task.hs # implementacja typu Task  
-└── README.md  
+│   ├── Date.hs  
+│   └── Task.hs  
+└── tests/  
+    ├── TestAddTask.hs  
+    ├── TestDateParse.hs  
+    ├── TestMain.hs  
+    └── TestSort.hs  
 ```
 
 ---
