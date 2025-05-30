@@ -1,8 +1,9 @@
 module Task where
 
+import Data.List (sortBy)
 import Date (DueDate, parseDueDate)
 
-data Priority = Low | Medium | High deriving (Show, Eq)
+data Priority = Low | Medium | High deriving (Show, Eq, Ord)
 
 data Task = Task
     { tid           :: Integer
@@ -18,9 +19,16 @@ addTask tasks title description dateStr priority =
     let nextId = if null tasks then 1 else maximum (map tid tasks) + 1
         Just date = parseDueDate dateStr
         newTask = Task nextId title description date priority False
-    in newTask : tasks -- TODO: sortowanie
+    in newTask : tasks
 
-nextId :: [Task] -> Integer
-nextId [] = 1
-nextId ts = maximum (map tid ts) + 1
 
+-- TODO: można to uogólnić funktorami I guess
+sortById :: [Task] -> [Task]
+sortById = sortBy (\t1 t2 -> compare (tid t1) (tid t2))
+
+sortByDate :: [Task] -> [Task]
+sortByDate = sortBy (\t1 t2 -> compare (dueDate t1) (dueDate t2))
+
+-- tutaj sortujemy malejąco, bo wyższy priorytet jest istotniejszy
+sortByPriority :: [Task] -> [Task]
+sortByPriority = sortBy (\t1 t2 -> compare (priority t2) (priority t1))

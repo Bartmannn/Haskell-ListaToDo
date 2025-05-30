@@ -5,8 +5,8 @@ module Date
   ) where
 
 import Data.Time
-import Data.Time.Format (defaultTimeLocale, parseTimeM)
 import GHC.Generics (Generic)
+import Data.Time.Format (defaultTimeLocale, parseTimeM)
 
 -- tworzymy nasz własny typ daty na podstawie Day
 newtype DueDate = DueDate { getDay :: Day }
