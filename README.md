@@ -36,12 +36,24 @@ Haskell-ListaToDo
 
 Z katalogu głównego projektu uruchom GHCi:
 ```bash
-ghci -i:src
+ghci -i:src -i:tests
 ```
 
-W interpreterze wpisz:
+Wymagane moduły importuje się następująco:
 ```
 :set -package time
+:set -package HUnit
+```
+
+Główny program uruchamia się:
+```
 :l app/Main.hs
 main
 ```
+
+Testy uruchamia się:
+```
+:l test/TestMain.hs
+mainTest
+```
+
