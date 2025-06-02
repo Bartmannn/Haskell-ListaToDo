@@ -9,6 +9,9 @@ import qualified TestMain
 main :: IO ()
 main = do
 
+    let saveFile = "data/save.txt"
+    tasks <- loadTasks saveFile
+
     let tasks = [ Task 1 "Spotkanie" "Opis1" (fromJust $ parseDueDate "02-01-2024") Low False
                 , Task 2 "Projekt" "Opis2" (fromJust $ parseDueDate "03-01-2024") Medium False
                 , Task 3 "Zadanie domowe" "Opis3" (fromJust $ parseDueDate "01-01-2024") High False
@@ -29,7 +32,7 @@ main = do
     putStrLn "=== Kończenie zadania ==="
     putStrLn $ prettyPrintTasks $ markTaskDone 2 tasks
 
-
+    saveTasks saveFile updatedList
 
     -- putStrLn "=== Dodawanie zadania ==="
     -- putStrLn "Tytuł:"
