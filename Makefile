@@ -1,31 +1,35 @@
 UNAME := $(shell uname)
 OS := $(OS)
-PACKAGES := "-package process"
-REMOVE_CMD = rm
+REMOVE_CMD = rm -f
+GHC_OPTS = -i:src -i:tests
 
+# windows może być do poprawy!
 ifeq ($(OS),Windows_NT)
-    OS_FLAGS = -DWINDOWS
-    NOTIFY_CMD = echo "Windows notification stub"
-	REMOVE_CMD = del
-else ifeq ($(UNAME), Darwin)
-    OS_FLAGS = -DMAC
-    NOTIFY_CMD = osascript -e 'display notification "Test" with title "ToDo"'
-else ifeq ($(UNAME), Linux)
-    OS_FLAGS = -DLINUX
-    NOTIFY_CMD = notify-send "ToDo" "Test"
+    EXEC = build\\todo.exe
+    CLEAN_CMD = powershell -Command "Get-ChildItem -Recurse -Include *.o,*.hi,*.exe | Remove-Item -Force"
 else
-    OS_FLAGS =
-    NOTIFY_CMD = echo "Nieznany system"
+    EXEC = ./build/todo
+    CLEAN_CMD = \
+        find . -name "*.o" -type f -delete && \
+        find . -name "*.hi" -type f -delete && \
+        rm -f build/todo NUL || true
 endif
 
-todo: Main.hs lab/Notify.hs
-	ghc -cpp -ilab $(OS_FLAGS) $(PACKAGES) -o build/todo Main.hs
 
-run:
-	./build/todo
+.PHONY: all run test clean
 
-notify:
-	$(NOTIFY_CMD)
+all: build/todo
+
+build/todo: app/Main.hs
+	@mkdir -p build
+	ghc $(GHC_OPTS) -package time -package HUnit -o build/todo app/Main.hs
+
+run: build/todo
+	$(EXEC)
+
+test: tests/TestMain.hs
+	ghc $(GHC_OPTS) -package time -package HUnit -o build/tests tests/TestMain.hs
+	./build/tests
 
 clean:
-	$(REMOVE_CMD) *.o *.hi lab/*.o lab/*.hi
+	@$(CLEAN_CMD)
