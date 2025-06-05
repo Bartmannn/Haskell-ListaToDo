@@ -22,13 +22,13 @@ all: build/todo
 
 build/todo: app/Main.hs
 	@mkdir -p build
-	ghc $(GHC_OPTS) -package time -package HUnit -o build/todo app/Main.hs
+	ghc $(GHC_OPTS) -package time -package HUnit -package directory -o build/todo app/Main.hs
 
 run: build/todo
 	$(EXEC)
 
 test: tests/TestMain.hs
-	ghc $(GHC_OPTS) -package time -package HUnit -o build/tests tests/TestMain.hs
+	ghc $(GHC_OPTS) -package time -package HUnit -package directory -o build/tests tests/TestMain.hs
 	./build/tests
 
 clean:

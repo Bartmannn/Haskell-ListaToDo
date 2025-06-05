@@ -68,7 +68,7 @@ choiceMenu tasks = do
         "5" -> printMenu tasks
         "print" -> printMenu tasks 
         "wyswietl" -> printMenu tasks 
-         "6" -> sortMenu tasks 
+        "6" -> sortMenu tasks 
         "sort" -> sortMenu tasks
         "filtr" -> sortMenu tasks
         "6 id" -> sortId tasks
@@ -181,11 +181,6 @@ deleteMenu tasks = do
 printMenu :: [Task] -> IO ()
 printMenu tasks = do
     putStrLn $ prettyPrintTasks tasks
-    choiceMenu tasks
-
-sortMenu :: [Task] -> IO ()
-sortMenu tasks = do  
-    putStrLn "=== Sortowanie zadań ==="
     choiceMenu tasks
 
 sortMenu :: [Task] -> IO ()
