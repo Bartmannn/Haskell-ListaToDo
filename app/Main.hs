@@ -68,7 +68,17 @@ choiceMenu tasks = do
         "5" -> printMenu tasks
         "print" -> printMenu tasks 
         "wyswietl" -> printMenu tasks 
-        "6" -> choiceMenu tasks --sortMenu --TODO
+         "6" -> sortMenu tasks 
+        "sort" -> sortMenu tasks
+        "filtr" -> sortMenu tasks
+        "6 id" -> sortId tasks
+        "sortid" -> sortId tasks
+        "6 idr" -> sortIdR tasks
+        "sortidr" -> sortIdR tasks
+        "sortdt" -> sortDate tasks
+        "sortdtr" ->  sortDateR tasks
+        "sortpr"-> sortPrior tasks
+        "sortprr"-> sortPriorR tasks
         "7" -> do
             helpMenu
             choiceMenu tasks
@@ -178,25 +188,73 @@ sortMenu tasks = do
     putStrLn "=== Sortowanie zadań ==="
     choiceMenu tasks
 
+sortMenu :: [Task] -> IO ()
+sortMenu tasks = do  
+    putStrLn "=== Sortowanie zadań ==="
+    putStrLn "Możliwe sortowanie:"
+    putStrLn " Id      - sortuje po Id rosnąco"
+    putStrLn " IdR     - sortuje po Id malejąco"
+    putStrLn " Dt    - sortuje po dacie rosnąco"
+    putStrLn " DtR   - sortuje po dacie malejąco"
+    putStrLn " Pr    - sortuje od najsilnijeszego priorytetu"
+    putStrLn " PrR   - sortuje od najsłabszego priorytetu"
+    opt <- getLine
+    case map toLower opt of
+        "id" -> sortId tasks
+        "id asc" -> sortId tasks
+        "idr" -> sortIdR tasks
+        "id dec" -> sortIdR tasks
+        "dt" -> sortDate tasks
+        "dt asc" -> sortDate tasks
+        "dtr" -> sortDateR tasks
+        "dt dec" -> sortDateR tasks
+        "pr" -> sortPrior tasks
+        "pr dec" -> sortPrior tasks
+        "prr" -> sortPriorR tasks
+        "pr inc" -> sortPriorR tasks
+        _ -> choiceMenu tasks
+sortId :: [Task] -> IO ()
+sortId tasks = do
+    putStrLn "=== Sortowanie wg Id rosnąco ==="
+    let sta = sortById tasks 
+    putStrLn $ prettyPrintTasks sta
+    choiceMenu sta
 
-{-
-    putStrLn "=== Sortowanie wg Id ==="
-    putStrLn $ prettyPrintTasks $ sortById tasks
+sortIdR :: [Task] -> IO ()
+sortIdR tasks = do    
+    putStrLn "=== Sortowanie wg Id - malejąco ==="
+    let stasks = sortByIdDesc tasks
+    putStrLn $ prettyPrintTasks stasks
+    choiceMenu stasks
 
-    putStrLn "=== Sortowanie wg Daty ==="
-    putStrLn $ prettyPrintTasks $ sortByDate tasks
+sortDate :: [Task] -> IO ()
+sortDate tasks = do
+    putStrLn "=== Sortowanie wg Daty - rosnąco  ==="
+    let sta = sortByDate tasks
+    putStrLn $ prettyPrintTasks sta 
+    choiceMenu sta
 
-    putStrLn "=== Sortowanie wg Priorytetu ==="
-    putStrLn $ prettyPrintTasks $ sortByPriority tasks
+sortDateR :: [Task] -> IO ()
+sortDateR tasks = do
+    putStrLn "=== Sortowanie wg Daty - malejąco ==="
+    let sta = sortByDateDesc tasks
+    putStrLn $ prettyPrintTasks sta 
+    choiceMenu sta
 
-    putStrLn "=== Usuwanie zadania ==="
-    putStrLn $ prettyPrintTasks $ removeTaskById 2 tasks
+sortPrior :: [Task] -> IO ()
+sortPrior tasks = do
+    putStrLn "=== Sortowanie wg Priorytetu od najmocniejszego ==="
+    let sta = sortByPriority tasks
+    putStrLn $ prettyPrintTasks sta 
+    choiceMenu sta
 
-    putStrLn "=== Kończenie zadania ==="
-    putStrLn $ prettyPrintTasks $ markTaskDone 2 tasks
+sortPriorR :: [Task] -> IO ()
+sortPriorR tasks = do
+    putStrLn "=== Sortowanie wg Priorytetu od najsłabszego ==="
+    let sta = sortByPriorityInc tasks
+    putStrLn $ prettyPrintTasks sta 
+    choiceMenu sta
 
-    saveTasks saveFile updatedList
--}
 
 
 mainTest = TestMain.mainTest
