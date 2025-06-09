@@ -82,7 +82,7 @@ colorGreen = color "32"
 
 prettyPrintTask :: Task -> String
 prettyPrintTask task =
-    let statusIcon = if done task then "✔" else "✖"
+    let statusIcon = if done task then ":D" else "><"
         idStr      = "[" ++ show (tid task) ++ "]"
         titleStr   = "Tytuł: " ++ title task
         dateStr    = "Data: " ++ show (dueDate task)
