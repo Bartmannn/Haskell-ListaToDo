@@ -51,13 +51,22 @@ markTaskDone targetId =
 sortById :: [Task] -> [Task]
 sortById = sortBy (\t1 t2 -> compare (tid t1) (tid t2))
 
+sortByIdDesc :: [Task] -> [Task] 
+sortByIdDesc = sortBy (\t1 t2 -> compare (tid t2) (tid t1))
+--sortByIdDesc = reverse . sortById
+
 sortByDate :: [Task] -> [Task]
 sortByDate = sortBy (\t1 t2 -> compare (dueDate t1) (dueDate t2))
+
+sortByDateDesc :: [Task] -> [Task]
+sortByDateDesc = sortBy (\t1 t2 -> compare (dueDate t2) (dueDate t1))
 
 -- tutaj sortujemy malejąco, bo wyższy priorytet jest istotniejszy
 sortByPriority :: [Task] -> [Task]
 sortByPriority = sortBy (\t1 t2 -> compare (priority t2) (priority t1))
 
+sortByPriorityInc :: [Task] -> [Task]
+sortByPriorityInc = sortBy (\t1 t2 -> compare (priority t1) (priority t2))
 
 -- Wyświetlanie zadań --
 
