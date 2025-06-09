@@ -1,14 +1,17 @@
-module TestMain where
+module Main where
 
-import Test.HUnit
+import Test.HUnit ( runTestTT, Test(TestList) )   
 
 import qualified TestSort
 import qualified TestAddTask
 import qualified TestDateParse
 
-mainTest :: IO Counts
-mainTest = runTestTT $ TestList
-    [   TestAddTask.tests
-    ,   TestSort.tests
-    ,   TestDateParse.tests
-    ]
+main :: IO ()
+main = do
+    putStrLn "=== Uruchamianie testów ==="
+    _ <- runTestTT $ TestList
+        [   TestAddTask.tests
+        ,   TestSort.tests
+        ,   TestDateParse.tests
+        ]
+    return ()

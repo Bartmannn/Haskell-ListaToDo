@@ -6,12 +6,12 @@ module Date
   ) where
 
 import Data.Time
-import GHC.Generics (Generic)
+-- import GHC.Generics (Generic)
 import Data.Time.Format (defaultTimeLocale, parseTimeM)
 
 -- tworzymy nasz własny typ daty na podstawie Day
 newtype DueDate = DueDate { getDay :: Day }
-  deriving (Eq, Ord, Generic)
+  deriving (Eq, Ord)
 
 -- sposób wyświetlania dat
 instance Show DueDate where

@@ -2,10 +2,7 @@ module Task where
 
 import Data.List (sortBy)
 import Date (DueDate, parseDueDate, parseDueDateSafe)
-import System.IO (withFile, IOMode(AppendMode), hPutStrLn)
-import Data.Maybe (mapMaybe)
-import Text.Read (readMaybe)
-import System.Directory (doesFileExist)
+
 
 data Priority = Low | Medium | High deriving (Show, Read, Eq, Ord)
 
@@ -93,38 +90,3 @@ prettyPrintTasks tasks =
     unlines $ map prettyPrintTask tasks
 
 
--- wczytywanie, zapisywanie, takie tam
-
--- Konwersja Task -> String
-serializeTask :: Task -> String
-serializeTask (Task i t d due p done) =
-  unwords [show i, show t, show d, show due, show p, show done]
-
--- Konwersja String -> Maybe Task
-deserializeTask :: String -> Maybe Task
-deserializeTask str =
-  case words str of
-    (i:t:d:date:p:done:_) ->
-      Task <$> readMaybe i
-           <*> readMaybe t
-           <*> readMaybe d
-           <*> (parseDueDate =<< readMaybe date)
-           <*> readMaybe p
-           <*> readMaybe done
-    _ -> Nothing
-
--- Zapis listy zadań do pliku
-saveTasks :: FilePath -> [Task] -> IO ()
-saveTasks path tasks =
-  withFile path AppendMode $ \handle ->
-    mapM_ (hPutStrLn handle . serializeTask) tasks
-
--- Wczytanie listy zadań z pliku
-loadTasks :: FilePath -> IO [Task]
-loadTasks path = do
-  exists <- doesFileExist path
-  if not exists
-    then return []
-    else do
-      content <- readFile path
-      length content `seq` return (mapMaybe deserializeTask (lines content))
