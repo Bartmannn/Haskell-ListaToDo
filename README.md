@@ -6,64 +6,60 @@ Zadania są przechowywane w pamięci jako lista.
 
 ---
 
+## ⚙️ Technologie
+
+- GHC 9.4.8
+- System budowania: `cabal`
+- Testy jednostkowe: `HUnit`
+- Terminalowa aplikacja w katalogu `app/`
+- Logika i modele w `src/`
+- Dane zapisywane do pliku: `data/save.txt`
+
+---
+
+## 📁 Struktura katalogów
+
+```bash
+Haskell-ListaToDo/  
+├── CHANGELOG.md            # Historia zmian i wersji projektu  
+├── Haskell-ListaToDo.cabal # Konfiguracja projektu cabal (nazwa, zależności, build)  
+├── LICENSE                 # Informacja o licencji (MIT)  
+├── Makefile                # Skrypt budowania i czyszczenia projektu  
+├── README.md               # Instrukcja użytkownika (ten plik)  
+├── app
+│   └── Main.hs
+├── cabal.project.local     # Lokalne ustawienia (np. tests: True)  
+├── data
+│   └── save.txt
+├── lab
+│   └── Notify.hs           # Pliki tymczasowe  
+├── src
+│   ├── Date.hs
+│   ├── Reader.hs
+│   ├── Task.hs
+│   └── Writer.hs
+└── tests
+    ├── TestAddTask.hs
+    ├── TestDateParse.hs
+    ├── TestMain.hs
+    └── TestSort.hs
+```
+
+---
+
 ## 🚀 Jak uruchomić projekt
 
-### 🔧 Wymagania
-- GHC (kompilator Haskella)
-- GHCi (interaktywny interpreter)
-- Folder `src/` z modułami `Task.hs` i `Date.hs`
-- Plik `app/Main.hs`
-
----
-
-### 📁 Struktura katalogów
-
+### 1. Zbuduj projekt:
 ```bash
-Haskell-ListaToDo/
-├── Makefile        # proces kompilacji programu  
-├── README.md  
-├── app/  
-│   └── Main.hs     # plik główny aplikacji  
-├── build/          # katalog skompilowanych wersji aplikacji  
-├── data/  
-│   └── save.txt  
-├── lab/            # pliki tymczasowe laboratoryjne  
-│   └── Notify.hs  
-├── resources/  
-├── src/  
-│   ├── Date.hs  
-│   └── Task.hs  
-└── tests/  
-    ├── TestAddTask.hs  
-    ├── TestDateParse.hs  
-    ├── TestMain.hs  
-    └── TestSort.hs  
+cabal build
 ```
 
----
-
-### ✅ Uruchamianie w GHCi
-
-Z katalogu głównego projektu uruchom GHCi:
+### 2. Uruchom program:
 ```bash
-ghci -i:src -i:tests
+cabal run
 ```
 
-Wymagane moduły importuje się następująco:
+### 3. (Opcjonalnie) Uruchom testy:
+```bash
+cabal test
 ```
-:set -package time
-:set -package HUnit
-```
-
-Główny program uruchamia się:
-```
-:l app/Main.hs
-main
-```
-
-Testy uruchamia się:
-```
-:l test/TestMain.hs
-mainTest
-```
-
