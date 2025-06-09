@@ -1,6 +1,8 @@
 module Main where
 
 import Task
+import Reader
+import Writer
 import Data.Char (toLower)
 import Text.Read (readMaybe)
 
@@ -8,25 +10,33 @@ import Text.Read (readMaybe)
 main :: IO ()
 main = do
     putStrLn "Witaj w aplikacji dla to do list"
-    {-}
-    --TODO zapisywanie do pliku
-    --loadingFile
-    let saveFile = "data/save.txt"
-    tasks <- loadTasks saveFile
--}
-    let tasks = []
+
+       --loadingFile TODO bo nei działa
+    fileName <- getFile
+    tasks <- loadTasks fileName
 
     helpMenu
-    choiceMenu tasks
+    endTasks <- choiceMenu tasks
+    exitSave endTasks fileName
 
-    -- TODO zapisywanie do pliku
+--TODO wybor pliku
+getFile :: IO String
+getFile = do
+    let sourceName = "data/save.txt"
+   -- putStrLn ("Dane z pliku " ++ sourceName)
+    return sourceName
 
-{- --pobiera z pliku
-loadingFile :: IO ()
-loadingFile = do 
-
-savingFile ::    
-    -}
+exitSave :: [Task] -> FilePath -> IO ()
+exitSave tasks fileName = do
+    let tosave = sortById tasks
+    saveTasks fileName tosave
+    putStrLn ("Zapisano w pliku " ++ fileName)
+    
+exitSaveAppend:: [Task] -> FilePath -> IO ()
+exitSaveAppend tasks fileName = do
+    let tosave = sortById tasks
+    saveTasksAppend fileName tosave
+    putStrLn ("Zapisano w pliku " ++ fileName)
 
 --wyswietla komendy
 helpMenu :: IO ()
@@ -43,11 +53,11 @@ helpMenu = do
 --    putStrLn " 9 / load / zalacz       - załącz inny plik "
 
 --TODO wszedzie pokazywac tym ładnym
-choiceMenu :: [Task] -> IO ()
+choiceMenu :: [Task] -> IO [Task]
 choiceMenu tasks = do
-    putStrLn "Wybierz operacje"
+    putStrLn "Wybierz operacje 1-8"
     opt <- getLine
-    --TODO zebrać bardziej razem te opcje
+    --TODO *
     case map toLower opt of
         "1" -> addMenu tasks
         "add" -> addMenu tasks
@@ -56,11 +66,14 @@ choiceMenu tasks = do
         "done" -> doneMenu tasks
         "ukoncz" -> doneMenu tasks
         "3" -> modifyMenu tasks --TODO
+        "modify" -> modifyMenu tasks 
+        "edit" -> modifyMenu tasks 
         "4" -> deleteMenu tasks
         "delete" -> deleteMenu tasks
         "usun" -> deleteMenu tasks
         "5" -> printMenu tasks
         "print" -> printMenu tasks 
+        "show" -> printMenu tasks 
         "wyswietl" -> printMenu tasks 
         "6" -> sortMenu tasks 
         "sort" -> sortMenu tasks
@@ -82,14 +95,15 @@ choiceMenu tasks = do
         "pomoc" -> do
             helpMenu
             choiceMenu tasks
-        "8" -> do --TODO
-            --zapisywanie
-            putStrLn "===Koniec==="
-            return ()
+        "8" -> return tasks
+        "exit" -> return tasks
+        "q" -> return tasks
+        "quit" -> return tasks
+        "koniec" -> return tasks
 --        "9" -> putStrLn "Tak" --TODO*
         _ -> do 
-            putStrLn "Niepoprawna komenda"
-            choiceMenu tasks
+            putStrLn "Niepoprawna komenda" >> choiceMenu tasks
+        return tasks --usun
 
 addMenu :: [Task] -> IO ()
 addMenu tasks = do
