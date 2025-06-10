@@ -4,9 +4,11 @@ import Task
 import System.IO (withFile, IOMode(AppendMode, WriteMode), hPutStrLn)
 
 -- Konwersja Task -> String
-serializeTask :: Task -> String
 serializeTask (Task i t d due p done) =
-  unwords [show i, show t, show d, show due, show p, show done]
+  unwords [show i, t, d, show due, show p, show done]
+
+
+
 
 -- Zapis listy zadań do pliku
 saveTasks :: FilePath -> [Task] -> IO ()
