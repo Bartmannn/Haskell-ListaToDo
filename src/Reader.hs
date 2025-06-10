@@ -12,12 +12,14 @@ deserializeTask str =
   case words str of
     (i:t:d:date:p:doneStr:_) ->
       Task <$> readMaybe i
-           <*> readMaybe t
-           <*> readMaybe d
-           <*> (parseDueDate =<< readMaybe date)
+           <*> Just t
+           <*> Just d
+           <*> parseDueDate date
            <*> readMaybe p
            <*> readMaybe doneStr
     _ -> Nothing
+
+
 
 -- Wczytanie listy zadań z pliku
 loadTasks :: FilePath -> IO [Task]
