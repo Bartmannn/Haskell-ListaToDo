@@ -9,32 +9,32 @@ import Text.Read (readMaybe)
 
 main :: IO ()
 main = do
-    putStrLn "Witaj w aplikacji dla to do list"
+    putStrLn "Witaj użytkowniku w aplikacji to do list"
 
        --loadingFile TODO bo nei działa
     fileName <- getFile
     putStrLn $ "Wczytywanie zadań z pliku: " ++ fileName
-    tasks <- loadTasks fileName
-    putStrLn $ "Wczytano " ++ show (length tasks) ++ " zadań."
+    tasks <- loadTasks ("data/" ++ fileName)
+    putStrLn $ "Wczytano wszystkie zadania ( " ++ show (length tasks) ++ " )"
 
     helpMenu
     endTasks <- choiceMenu tasks
     if null endTasks
         then putStrLn "Zakończono bez zapisywania."
-        else exitSave endTasks fileName
+        else exitSave endTasks ("data/" ++ fileName)
 
 --TODO wybor pliku
 getFile :: IO String
 getFile = do
-    putStrLn "Czy chcesz wczytać dane z własnego pliku? W przeciwnym razie zostanie użyty domyślny (data/save.txt). (tak/nie)"
+    putStrLn "Czy chcesz wczytać dane z własnego pliku? W przeciwnym razie zostanie użyty domyślny (save.txt). (tak/nie)"
     answer <- getLine
     if map toLower answer `elem` ["tak", "t", "yes", "y"]
       then do
-        putStrLn "Podaj nazwę pliku (np. data/save.txt):"
+        putStrLn "Podaj nazwę pliku (np. save.txt):"
         name <- getLine
         return name
       else do
-        let defaultFile = "data/save.txt"
+        let defaultFile = "save.txt"
         putStrLn $ "Użyto domyślnego pliku: " ++ defaultFile
         return defaultFile
 
