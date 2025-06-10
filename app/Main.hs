@@ -13,18 +13,31 @@ main = do
 
        --loadingFile TODO bo nei działa
     fileName <- getFile
+    putStrLn $ "Wczytywanie zadań z pliku: " ++ fileName
     tasks <- loadTasks fileName
+    putStrLn $ "Wczytano " ++ show (length tasks) ++ " zadań."
 
     helpMenu
     endTasks <- choiceMenu tasks
-    exitSave endTasks fileName
+    if null endTasks
+        then putStrLn "Zakończono bez zapisywania."
+        else exitSave endTasks fileName
 
 --TODO wybor pliku
 getFile :: IO String
 getFile = do
-    let sourceName = "data/save.txt"
-   -- putStrLn ("Dane z pliku " ++ sourceName)
-    return sourceName
+    putStrLn "Czy chcesz wczytać dane z własnego pliku? W przeciwnym razie zostanie użyty domyślny (data/save.txt). (tak/nie)"
+    answer <- getLine
+    if map toLower answer `elem` ["tak", "t", "yes", "y"]
+      then do
+        putStrLn "Podaj nazwę pliku (np. data/save.txt):"
+        name <- getLine
+        return name
+      else do
+        let defaultFile = "data/save.txt"
+        putStrLn $ "Użyto domyślnego pliku: " ++ defaultFile
+        return defaultFile
+
 
 exitSave :: [Task] -> FilePath -> IO ()
 exitSave tasks fileName = do
@@ -47,14 +60,15 @@ helpMenu = do
     putStrLn " 3 / modify / modyfikuj  - edytuj zadanie"
     putStrLn " 4 / delete / usun       - usuń zadanie"               
     putStrLn " 5 / print / wyswietl    - wyświetla zapisane zadania"
-    putStrLn " 6 / filtr / sortuj      - sortuje zadania po ID / dacie / priorytecie"
+    putStrLn " 6 / sort / sortuj       - sortuje zadania po ID / dacie / priorytecie"
     putStrLn " 7 / help / pomoc        - wyświetl liste poleceń ponownie"
     putStrLn " 8 / exit / koniec       - wyjdź i zapisz postęp"
+    putStrLn " 9 / exit with no save   - wyjdź bez zapisywania"
 --    putStrLn " 9 / load / zalacz       - załącz inny plik "
 
 choiceMenu :: [Task] -> IO [Task]
 choiceMenu tasks = do
-    putStrLn "Wybierz operacje 1-8"
+    putStrLn "Wybierz operacje 1-9 (help - 7)"
     opt <- getLine
     --TODO *
     case map toLower opt of
@@ -96,6 +110,15 @@ choiceMenu tasks = do
         "q" -> return tasks
         "quit" -> return tasks
         "koniec" -> return tasks
+        "9" -> do
+            putStrLn "Wyjście bez zapisywania."
+            return []  -- lub return tasks, ale potem w `main` trzeba to zignorować
+        "exitnosave" -> do
+            putStrLn "Wyjście bez zapisywania."
+            return []
+        "wyjdz" -> do
+            putStrLn "Wyjście bez zapisywania."
+            return []
 --        "9" -> putStrLn "Tak" --TODO*
         _ -> do 
             putStrLn "Niepoprawna komenda" >> choiceMenu tasks
